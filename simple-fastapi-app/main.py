@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from pydantic import BaseModel, Json
+from pydantic import BaseModel
 import uvicorn
+from typing import List
 
 app = FastAPI(title="Simple Containerized (Docker) FastAPI web app", version=1.0)
 
@@ -12,9 +13,14 @@ class Item(BaseModel):
     is_offer: bool
 
 
+# items collection list
+items: List[Item] = []
+
+
 @app.get("/")
 async def read_root():
     return {"data": "Hello this is a simple containerized FastAPI web app"}
+
 
 @app.get("/health")
 async def health_check():
@@ -23,8 +29,25 @@ async def health_check():
 
 @app.get("/items/{item_id}")
 async def get_item(item_id):
-    item = Item(id=item_id, name=f"Item{item_id}", is_offer=True, price=200)
-    return {"data": item.model_dump()}
+    for item in items:
+        filtered_items = filter(item.id == item_id, items)
+
+    return {"data": filtered_items[0]}
+
+
+@app.get("/items")
+async def get_items():
+    return {"data": items}
+
+
+@app.post("/items/")
+async def create_item(item: Item):
+    items.append(item)
+    return {
+        "message": "successfully created item",
+        "data": item,
+        "count": len(items),
+    }
 
 
 if __name__ == "__main__":

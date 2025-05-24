@@ -18,5 +18,5 @@ EXPOSE 8000
 
 # command to run the app
 # CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-CMD [ "py", "min.py" ]
+CMD [ "python", "main.py" ]
 
