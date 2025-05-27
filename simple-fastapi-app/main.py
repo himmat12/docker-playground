@@ -27,12 +27,12 @@ async def health_check():
     return {"status": "Helthy"}
 
 
-@app.get("/items/{item_id}")
-async def get_item(item_id):
-    for item in items:
-        filtered_items = filter(item.id == item_id, items)
+@app.get("/items/{id}")
+async def get_item(id: int):
+    error_msg = "Data not exists"
+    item = next((item for item in items if item.id == id), error_msg)
 
-    return {"data": filtered_items[0]}
+    return {"data": item}
 
 
 @app.get("/items")
