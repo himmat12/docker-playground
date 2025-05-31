@@ -1,22 +1,33 @@
-# using Python 3.11 slim image as base
-FROM python:3.13-slim
 
-# setting working directory inside the container
+# Stage 1: Build dependencies and compile
+
+
+FROM python:3.13 AS builder
+
 WORKDIR /app
 
 # copying the requirements
 COPY requirements.txt .
 
 #  installing the requirements - Python dependencies
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install --user --no-cache-dir --upgrade -r requirements.txt
 
-#  copying appliction code to the working dir "/app" inside container
+
+# Stage 2: slim runtime image
+
+FROM python:3.13-slim AS production 
+
+WORKDIR /app
+
+COPY --from=builder /root/.local /root/.local
 COPY . .
 
-# exposing the port to 8000 on which the FastAPI web ap will run
+ENV PATH=/root/.local/bin:$PATH
+
 EXPOSE 8000
 
-# command to run the app
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-CMD [ "python", "app/main.py" ]
+CMD [ "python", "backend/app/main.py" ]
+
+
 

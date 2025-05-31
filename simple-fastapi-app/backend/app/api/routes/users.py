@@ -2,9 +2,9 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 
-from ...core.db import get_session
-from app.models import User, UserCreate, UserRead, UserUpdate
-from app.crud import user_crud
+from core.db import get_session
+from models import User, UserCreate, UserRead, UserUpdate
+from crud import user_crud
 
 router = APIRouter(prefix="/users", tags=["users"])
 

@@ -1,6 +1,6 @@
 from typing import Optional, List
 from sqlmodel import Session, select
-from app.models import User, UserCreate, UserUpdate, Item, ItemCreate, ItemUpdate
+from models import User, UserCreate, UserUpdate, Item, ItemCreate, ItemUpdate
 
 
 class UserCRUD:
