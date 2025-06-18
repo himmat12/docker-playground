@@ -24,7 +24,7 @@ app.include_router(users.router, prefix="/api/v1")
 
 @app.get("/")
 def root():
-    return {"message": f"Welome to {settings.PROJECT_NAME}"}
+    return {"message": f"Welome to {settings.PROJECT_NAME}. This is new update. V1.0 completed. Dockerfile updated - `CMD updated with sh script.`"}
 
 
 @app.get("/health")
@@ -33,4 +33,4 @@ def health_check():
 
  
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

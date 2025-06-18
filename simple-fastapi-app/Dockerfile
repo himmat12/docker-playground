@@ -27,7 +27,6 @@ ENV PATH=/root/.local/bin:$PATH
 
 EXPOSE 8000
 
-CMD [ "python", "backend/app/main.py" ]
-
-
+# CMD [ "python", "backend/app/main.py" ]
+CMD sh -c "cd ./backend/app && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
 

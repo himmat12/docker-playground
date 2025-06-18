@@ -1,0 +1,28 @@
+services:
+  app:
+    build: . # build app service (container) from our fastAPI app dockerfile
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_SERVER=db
+    depends_on:
+      - db
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "cd ./backend/app && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+
+  db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - app-data:/var/lib/postgresql/data
+
+volumes:
+    app-data:
+    
